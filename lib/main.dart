@@ -13,10 +13,11 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  List<int> numbers = [];
-  void onClicked() {
+  bool isVisible = true;
+
+  void titleVisible() {
     setState(() {
-      numbers.add(numbers.length);
+      isVisible = !isVisible;
     });
   }
 
@@ -24,26 +25,63 @@ class _AppState extends State<App> {
   //모든 위젯에는 build 메소드를 포함해야 한다.
   Widget build(BuildContext context) {
     return MaterialApp(
+      //BuildContext 클래스는 다 같은 테마데이터를 공유하고 따라서 그걸 다른 클래스에서도 사용가능!
+      theme: ThemeData(
+          textTheme: const TextTheme(
+        titleLarge: TextStyle(
+          color: Colors.red,
+        ),
+      )),
       home: Scaffold(
         backgroundColor: Colors.blue,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Click Count",
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              for (var n in numbers) Text("$n"),
+              isVisible ? const MyLargeTitle() : const Text("nothing"),
               IconButton(
-                  iconSize: 50,
-                  onPressed: onClicked,
-                  icon: const Icon(Icons.add_box_rounded)),
+                  onPressed: titleVisible,
+                  icon: const Icon(Icons.remove_red_eye)),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyLargeTitle extends StatefulWidget {
+  const MyLargeTitle({
+    super.key,
+  });
+
+  @override
+  State<MyLargeTitle> createState() => _MyLargeTitleState();
+}
+
+class _MyLargeTitleState extends State<MyLargeTitle> {
+  @override
+  void initState() {
+    //build 메소드 전에 실행되는 함수!(무조건)
+    super.initState();
+    print("initState");
+  }
+
+  @override
+  void dispose() {
+    //위젯이 삭제되었을 때 실행되는 함수!
+    super.dispose();
+    print("disposed");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("build");
+    return Text(
+      "My Large Title",
+      style: TextStyle(
+        fontSize: 30,
+        color: Theme.of(context).textTheme.titleLarge!.color,
       ),
     );
   }
