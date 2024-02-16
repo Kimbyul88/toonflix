@@ -1,32 +1,24 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:toonflix/screens/pomodoro_self.dart';
+import 'package:toonflix/screens/home_screen.dart';
+import 'package:toonflix/services/api_service.dart';
 
 void main() {
+  ApiService().getTodaysToons();
   runApp(const App());
 }
 
 //App 클래스는 앱 실행의 첫 루트라고 생각하면 된다.
 class App extends StatelessWidget {
+  //각 위젯은 위젯을 식별하기 위한 key를 가지고 있고, 그걸 super클래스인 StatelessWidget에게 보낸다.
   const App({super.key});
 
   @override
   //모든 위젯에는 build 메소드를 포함해야 한다.
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          backgroundColor: const Color(0xFFE7626C),
-        ),
-        textTheme: const TextTheme(
-          displayMedium: TextStyle(
-            color: Color(0xFF232B55),
-          ),
-        ),
-        cardColor: const Color(0xfff3eddb),
+      home: Container(
+        child: const HomeScreen(),
       ),
-      home: const Pomodor(),
     );
   }
 }
